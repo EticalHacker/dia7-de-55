@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Día 7</title>
+<style>
+  :root { box-sizing: border-box; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); --ink: #fff; --shade: rgba(20,40,70,.45); }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  html, body { height: 100%; margin: 0; background: #0f1d2e; overflow: hidden; font-family: Georgia, "Times New Roman", serif; }
+  svg#escena { position: fixed; inset: 0; width: 100%; height: 100%; }
+  #texto { position: fixed; top: 0; left: 0; right: 0; z-index: 2; text-align: center; color: var(--ink);
+    padding: calc(env(safe-area-inset-top, 0px) + 28px) 24px 64px; text-shadow: 0 1px 12px var(--shade);
+    background: linear-gradient(to bottom, rgba(30,60,100,.35), transparent); }
+  #texto small { display: block; letter-spacing: .3em; text-transform: uppercase; font-size: .75rem; opacity: .85; margin-bottom: 10px; }
+  #texto p { margin: 0 auto; max-width: 40rem; font-size: clamp(.95rem, 2.2vw, 1.3rem); line-height: 1.55; font-style: italic; }
+  #musica-btn { position: fixed; z-index: 3; right: 16px; bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+    width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,.5); cursor: pointer;
+    background: rgba(255,255,255,.18); color: #fff; font-size: 18px; backdrop-filter: blur(6px); display: none; }
+</style>
+</head>
+<body>
+
+<!-- TEXTO SUPERIOR: edita aquí -->
+<div id="texto">
+  <small id="etiqueta">Día 7</small>
+  <p id="frase">Escribe aquí tu texto.</p>
+</div>
+
+<!-- MÚSICA: pon tu archivo en MUSICA_SRC (ver script abajo) -->
+<audio id="musica" loop preload="auto"></audio>
+<button id="musica-btn" aria-label="Música">♪</button>
+
+<svg id="escena" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7fb6e3"/>
+      <stop offset=".45" stop-color="#bddcee"/>
+      <stop offset=".72" stop-color="#f6e6b8"/>
+      <stop offset="1" stop-color="#f3d38f"/>
+    </linearGradient>
+    <radialGradient id="sol" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fff2c4" stop-opacity=".95"/>
+      <stop offset=".4" stop-color="#ffd98a" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#ffd98a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="loma" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5d7f6c"/>
+      <stop offset="1" stop-color="#2f4a45"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#cielo)"/>
+  <ellipse cx="760" cy="500" rx="420" ry="200" fill="url(#sol)"/>
+
+  <!-- montañas -->
+  <g id="ciudad"></g>
+  <rect y="560" width="1200" height="90" fill="#f6e6b8" opacity=".18"/>
+
+  <!-- loma -->
+  <path d="M0 800 L0 650 C220 640 420 600 600 590 C780 600 980 640 1200 660 L1200 800Z" fill="url(#loma)"/>
+  <g id="pasto" stroke="#8fb09a" stroke-width="2" stroke-linecap="round" opacity=".7"></g>
+
+  <!-- chico de espaldas, sentado en el borde -->
+  <g id="chico">
+    <path d="M572 592 C566 560 570 530 584 518 C592 513 608 513 616 518 C630 530 634 560 628 592Z" fill="#26364a"/>
+    <path d="M578 520 C590 512 610 512 622 520" fill="none" stroke="#2c3e55" stroke-width="3"/>
+    <rect x="593" y="502" width="14" height="14" rx="5" fill="#26364a"/>
+    <circle cx="600" cy="490" r="19" fill="#26364a"/>
+    <path d="M583 482 C586 468 614 468 617 482 C612 476 588 476 583 482Z" fill="#1c2a3b"/>
+    <!-- luz dorada en el borde derecho -->
+    <path d="M618 520 C630 532 634 560 628 592" fill="none" stroke="#f6d58f" stroke-width="2.5" opacity=".7"/>
+    <path d="M615 478 C619 484 618 492 612 500" fill="none" stroke="#f6d58f" stroke-width="2" opacity=".7"/>
+  </g>
+  <!-- pasto frente al chico -->
+  <path d="M0 800 L0 668 C240 654 440 622 600 614 C780 624 980 656 1200 676 L1200 800Z" fill="#2a433f"/>
+</svg>
+
+<script>
+  // ====== CONFIGURA AQUÍ ======
+  const ETIQUETA   = "Día 7";
+  const TEXTO      = "La verdad no tengo tantas palabras hoy, pero estamos mejor, por así decirlo. Un día más recordándote que te quiero, Nicole; quizá no lo demuestro mucho, pero la verdad, qué importa lo demás. Solo sé que te quiero, y es de lo único que estoy seguro.";
+  const MUSICA_SRC = "dia7.mp3";   // ← pon aquí tu música (ej. "data:audio/mpeg;base64,..." o la ruta del archivo)
+  const MUSICA_VOL = 0.3;  // volumen de 0 a 1
+  // ============================
+
+  document.getElementById("etiqueta").textContent = ETIQUETA;
+  document.getElementById("frase").textContent = TEXTO;
+
+  // Música (el navegador exige un toque del usuario para reproducir)
+  const audio = document.getElementById("musica");
+  const btn = document.getElementById("musica-btn");
+  if (MUSICA_SRC) {
+    audio.src = MUSICA_SRC;
+    audio.volume = MUSICA_VOL;
+    btn.style.display = "block";
+    audio.addEventListener("play",  () => btn.textContent = "❚❚");
+    audio.addEventListener("pause", () => btn.textContent = "♪");
+    btn.addEventListener("click", () => { audio.paused ? audio.play() : audio.pause(); });
+
+    // Autoplay: se intenta al abrir; si el navegador lo bloquea, arranca con el primer toque en la pantalla
+    const arrancar = (e) => {
+      if (e && e.target.closest && e.target.closest("#musica-btn")) return;
+      audio.play().then(() => {
+        ["pointerdown", "keydown", "touchstart"].forEach(ev => document.removeEventListener(ev, arrancar));
+      }).catch(() => {});
+    };
+    audio.play().catch(() => {
+      ["pointerdown", "keydown", "touchstart"].forEach(ev => document.addEventListener(ev, arrancar));
+    });
+  }
+
+  // Ciudad: casas de 2 y 3 pisos en tres capas
+  (function () {
+    let s = 11; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    const pick = a => a[Math.floor(r() * a.length)];
+    const capas = [
+      { base: 612, fh: 20, wall: ["#bcc8d4", "#c6cfd8", "#b3c0cd"], roof: ["#a1b0be", "#a9b5c1"], win: "#a5b4c3", lit: 0,    w: [30, 50] },
+      { base: 634, fh: 24, wall: ["#98abbe", "#a3b4c4", "#8ea2b6"], roof: ["#7d92a7", "#b79684"], win: "#7f93a8", lit: 0.12, w: [34, 56] },
+      { base: 658, fh: 28, wall: ["#72889e", "#7d92a6", "#687e94"], roof: ["#566c82", "#a5806e", "#5f7489"], win: "#566b80", lit: 0.3,  w: [38, 62] }
+    ];
+    let out = "";
+    capas.forEach(c => {
+      let x = -30;
+      while (x < 1230) {
+        const w = c.w[0] + r() * (c.w[1] - c.w[0]);
+        const pisos = r() < 0.5 ? 2 : 3;
+        const h = pisos * c.fh;
+        const y = c.base - h;
+        const wall = pick(c.wall), roof = pick(c.roof);
+        out += `<rect x="${x.toFixed(1)}" y="${y}" width="${w.toFixed(1)}" height="${h + 40}" fill="${wall}"/>`;
+        if (r() < 0.55) {
+          out += `<path d="M${(x - 3).toFixed(1)} ${y} L${(x + w / 2).toFixed(1)} ${y - 16} L${(x + w + 3).toFixed(1)} ${y}Z" fill="${roof}"/>`;
+        } else {
+          out += `<rect x="${(x - 2).toFixed(1)}" y="${y - 4}" width="${(w + 4).toFixed(1)}" height="5" fill="${roof}"/>`;
+          if (r() < 0.3) out += `<rect x="${(x + w * 0.7).toFixed(1)}" y="${y - 14}" width="5" height="11" fill="${roof}"/>`;
+        }
+        const cols = Math.max(2, Math.floor(w / 15));
+        for (let p = 0; p < pisos; p++) {
+          for (let k = 0; k < cols; k++) {
+            const wx = x + 5 + k * ((w - 10) / cols) + 1;
+            const wy = y + p * c.fh + 6;
+            const lit = r() < c.lit;
+            out += `<rect x="${wx.toFixed(1)}" y="${wy}" width="5" height="${Math.round(c.fh * 0.4)}" fill="${lit ? "#f7d98c" : c.win}" opacity="${lit ? 0.9 : 0.8}"/>`;
+          }
+        }
+        out += `<rect x="${(x + w - 2.5).toFixed(1)}" y="${y}" width="2.5" height="${h + 40}" fill="#f6d58f" opacity=".3"/>`;
+        x += w + r() * 4;
+      }
+    });
+    document.getElementById("ciudad").innerHTML = out;
+  })();
+
+  // Briznas de pasto sobre la cresta
+  const g = document.getElementById("pasto");
+  let d = "";
+  for (let i = 0; i < 160; i++) {
+    const x = Math.random() * 1200;
+    const t = x / 1200;
+    const y = 650 - 60 * Math.sin(Math.PI * t) * 0.9 + 4;
+    const h = 6 + Math.random() * 10;
+    d += `M${x.toFixed(1)} ${y.toFixed(1)} l${(Math.random()*4-2).toFixed(1)} ${-h.toFixed(1)} `;
+  }
+  const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  p.setAttribute("d", d);
+  p.setAttribute("fill", "none");
+  g.appendChild(p);
+</script>
+</body>
+</html>
